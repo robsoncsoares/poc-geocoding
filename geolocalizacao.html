@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        pre {
+            background-color: azure;
+            border: 1px solid cadetblue;
+            display: inline-block;
+            width: 98%;
+            margin: 10px 1%;
+            overflow: scroll;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div id="location"></div>
+    <script type="text/javascript">
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const { latitude, longitude, accuracy, altitudeAccuracy } = pos.coords;
+            console.log('latitude:', latitude);
+            console.log('longitude:', longitude);
+            console.log('accuracy:', accuracy);
+            console.log('altitudeAccuracy:', altitudeAccuracy);
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: new google.maps.LatLng(latitude, longitude) }, function(results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    console.log(results)
+                    const div1 = document.createElement("div");
+                    div1.innerHTML = "<h1>Dados de Geolocalização</h1>"
+                    div1.innerHTML += "<h2>Latitude: " + latitude + "</h2>";
+                    div1.innerHTML += "<h2>Longitude: " + longitude + "</h2>";
+                    div1.innerHTML += "<h2>Raio de precisão da consulta realizada: " + accuracy + " metros</h2>";
+                    div1.innerHTML += "<h2>Resultados de endereços encontrados (mais de um significa ambiguidade na consulta e imprecisão):</h2>";
+                    document.getElementById('location').appendChild(div1);                    
+
+                    const div2 = document.createElement("div");           
+                    for (var i = 0; i < results.length; i++) {
+                        div2.innerHTML += "<h3>Endereço "+ (i+1) +": " + results[i]['formatted_address'] +"</h3>";
+                    }
+                    document.getElementById('location').appendChild(div2);
+
+
+                    // https://developers.google.com/maps/documentation/geocoding/intro
+                    /*
+                    for (const result of results) {
+                        const pre = document.createElement("pre");
+                        pre.innerHTML = JSON.stringify(result, undefined, 1);                    
+                        document.getElementById('location').appendChild(pre);
+                    }
+                    */
+                    
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }, () => {}, { enableHighAccuracy: true })
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9EGS34wCegXeW36Ili47VzZKB9_WHn6k">
+    </script>
+</body>
+</html>
+    
+    
+  
+  
+
