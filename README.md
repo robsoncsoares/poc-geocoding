@@ -1,4 +1,4 @@
-# poc-geolocalizacao
+# poc-geocoding
 
 POC to test the accuracy of Google Geocoding API: 
 
